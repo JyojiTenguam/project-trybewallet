@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../redux/actions';
@@ -36,24 +36,24 @@ function Login() {
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={ handleSubmit }>
         <input
           type="email"
           name="email"
-          value={email}
-          onChange={handleChange}
+          value={ email }
+          onChange={ handleChange }
           placeholder="Digite seu email"
           data-testid="email-input"
         />
         <input
           type="password"
           name="password"
-          value={password}
-          onChange={handleChange}
+          value={ password }
+          onChange={ handleChange }
           placeholder="Digite sua senha"
           data-testid="password-input"
         />
-        <button disabled={!isValidForm()} type="submit">Entrar</button>
+        <button disabled={ !isValidForm() } type="submit">Entrar</button>
       </form>
     </div>
   );
