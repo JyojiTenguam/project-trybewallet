@@ -1,6 +1,4 @@
-export type UserType = {
-  email: string;
-};
+import { UserType } from '../../types/types';
 
 export const USER_LOGIN = 'USER_LOGIN';
 
