@@ -6,9 +6,24 @@ export type UserState = {
   user: UserType;
 };
 
-type ExchangeRateType = {
-  ask: string;
-  name: string;
+export type ExchangeRateType = {
+  [key: string]: {
+    code: string;
+    codein: string;
+    name: string;
+    high: string;
+    low: string;
+    varBid: string;
+    pctChange: string;
+    bid: string;
+    ask: string;
+    timestamp: string;
+    create_date: string;
+  };
+};
+
+export type ApiRenponseType = {
+  [key: string]: ExchangeRateType;
 };
 
 export type ExpenseType = {
@@ -18,7 +33,7 @@ export type ExpenseType = {
   currency: string;
   method: string;
   tag: string;
-  exchangeRates: Record<string, ExchangeRateType>;
+  exchangeRates: ExchangeRateType;
 };
 
 export type StoreState = {
@@ -28,7 +43,22 @@ export type StoreState = {
   wallet: {
     availableCurrencies: string[];
     expenses: ExpenseType[];
+    exchangeRates: ExchangeRateType;
     editor: boolean;
     idToEdit: number;
   };
+};
+
+export type ConvertType = {
+  code: string;
+  codein: string;
+  name: string;
+  high: string;
+  low: string;
+  varBid: string;
+  pctChange: string;
+  bid: string;
+  ask: string;
+  timestamp: string;
+  create_date: string;
 };
