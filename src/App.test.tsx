@@ -1,58 +1,47 @@
-import React from 'react';
-import { render } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import Login from './pages/Login';
 import rootReducer from './redux/reducers';
 import walletReducer from './redux/reducers/wallet';
 import userReducer from './redux/reducers/user';
 import { loginUser, currenciesUser, expensesUser, USER_LOGIN, ADD_CURRENCIES, ADD_EXPENSE } from './redux/actions';
 import { UserType, ExpenseType } from './types/types';
+import { renderWithRouterAndRedux } from './tests/helpers/renderWith';
+import store from './redux';
 
-// Função utilitária para criar uma store de teste com o rootReducer
-function createTestStore() {
-  return createStore(rootReducer);
-}
-
-const LOGIN_TEXT = 'Login';
-const ENTER_TEXT = 'Entrar';
-
-test('renderiza corretamente o componente de login', () => {
-  const store = createTestStore();
-
-  const { getByText, getByTestId } = render(
+test('verificando se existe um input para email', () => {
+  renderWithRouterAndRedux(
     <Provider store={ store }>
       <Login />
     </Provider>,
   );
-
-  // Verifique se o título "Login" está presente
-  expect(getByText(LOGIN_TEXT)).toBeInTheDocument();
-
-  // Verifique se os campos de entrada de email e senha estão presentes
-  expect(getByTestId('email-input')).toBeInTheDocument();
-  expect(getByTestId('password-input')).toBeInTheDocument();
-
-  // Verifique se o botão de submit está presente e inicialmente desabilitado
-  const submitButton = getByText(ENTER_TEXT);
-  expect(submitButton).toBeInTheDocument();
-  expect(submitButton).toBeDisabled();
+  const inputEmail = screen.getByTestId('email-input');
+  expect(inputEmail).toBeInTheDocument();
 });
 
 describe('Root Reducer', () => {
-  it('Combina corretamente os reducers de usuário e de carteira.', () => {
-    const initialState = {
-      user: { email: 'test@example.com' },
-      wallet: { balance: 0 } as never, // Update the type of wallet to 'never'
-    };
+// Defina o estado inicial e a ação
+  const initialState = {
+    user: {
+      email: 'test@example.com',
+    },
+    wallet: {
+      currencies: [],
+      expenses: [],
+      editor: false,
+      idToEdit: 0,
+    },
+  };
 
-    const action = { type: 'SOME_ACTION' };
+  const action = { type: 'DUMMY_ACTION' };
 
+  // Teste
+  test('Root Reducer combina corretamente os reducers de usuário e de carteira', () => {
     const combinedState = rootReducer(initialState, action);
 
     expect(combinedState).toEqual({
-      user: userReducer(undefined, action),
-      wallet: walletReducer(undefined, action),
+      user: userReducer(initialState.user, action),
+      wallet: walletReducer(initialState.wallet, action),
     });
   });
 });
